@@ -3,78 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Página Incrível</title>
+    <title>Brawl Guess - Adivinhe o Brawler!</title>
     <style>
-        /* CSS para dar um tapa no visual */
+        :root {
+            --brawl-yellow: #ffcb05;
+            --brawl-blue: #0066cc;
+            --brawl-dark: #1a1a1a;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Arial Black', sans-serif;
+            background-color: var(--brawl-dark);
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        header {
-            background: #6200ee;
-            color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 800px;
+        .container {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 20px;
+            border: 5px solid var(--brawl-blue);
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 0px #004488;
+            max-width: 400px;
+            width: 90%;
         }
 
-        main {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
+        h1 {
+            color: var(--brawl-yellow);
+            text-shadow: 2px 2px 0 #000;
+            margin-top: 0;
+        }
+
+        .hint-box {
+            background: #444;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            min-height: 50px;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
             border-radius: 8px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: none;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
-        .botao {
-            display: inline-block;
-            background: #03dac6;
-            color: #000;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        .botao:hover {
-            background: #018786;
+        button {
+            background: #58db1b;
+            border: none;
+            padding: 12px 25px;
             color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #3a9112;
+            font-size: 1rem;
+        }
+
+        button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #3a9112;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .stats {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #aaa;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Bem-vindo ao Meu Site</h1>
-        <p>Criado com HTML5 e CSS3</p>
-    </header>
+    <div class="container">
+        <h1>BRAWL GUESS</h1>
+        <div class="hint-box" id="hint">Clique em "Novo Jogo" para começar!</div>
+        
+        <input type="text" id="guessInput" placeholder="Nome do Brawler..." autocomplete="off">
+        <br>
+        <button onclick="checkGuess()">ADIVINHAR</button>
+        <button onclick="nextRound()" style="background: var(--brawl-blue); box-shadow: 0 4px 0 #003366;">NOVO JOGO</button>
 
-    <main>
-        <h2>Sobre este código</h2>
-        <p>Este é um exemplo básico mas robusto. Ele contém:</p>
-        <ul>
-            <li><strong>Meta tags:</strong> Para garantir que o site funcione bem no celular.</li>
-            <li><strong>CSS embutido:</strong> Para você ver como as cores e fontes funcionam.</li>
-            <li><strong>Estrutura Semântica:</strong> Uso de <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> e <code>&lt;footer&gt;</code>.</li>
-        </ul>
+        <div id="message"></div>
+        <div class="stats">Acertos: <span id="score">0</span></div>
+    </div>
 
-        <p>Quer ver uma mágica?</p>
-        <a href="#" class="botao" onclick="alert('Olá! Você clicou no botão.')">Clique Aqui</a>
-    </main>
+    <script>
+        // Lista atualizada com alguns brawlers e dicas
+        const brawlers = [
+            { name: "Shelly", hint: "O primeiro Brawler que você ganha no jogo." },
+            { name: "El Primo", hint: "Um lutador mascarado que pula nos inimigos. 'ELLLL PRIMOOO!'" },
+            { name: "Colt", hint: "Usa duas pistolas e se preocupa muito com o cabelo." },
+            { name: "Leon", hint: "Um brawler lendário que fica invisível." },
+            { name: "Mortis", hint: "O carrasco das criaturas da noite. Usa uma pá." },
+            { name: "Crow", hint: "Um corvo que atira adagas venenosas." },
+            { name: "Edgar", hint: "Usa um cachecol para bater nos outros e pula muito." },
+            { name: "Spike", hint: "Um cacto fofinho que não fala nada." },
+            { name: "Surge", hint: "Um robô que 'evolui' durante a partida com seu Super." },
+            { name: "Kit", hint: "Um gato lendário que pula nos aliados ou inimigos." },
+            { name: "Melodie", hint: "Uma cantora de Karaoke que tem notas orbitando ao redor." },
+            { name: "Clancy", hint: "Um brawler que parece uma lagosta e sobe de nível." }
+        ];
 
+        let currentBrawler = {};
+        let score = 0;
+
+        function nextRound() {
+            const randomIndex = Math.floor(Math.random() * brawlers.length);
+            currentBrawler = brawlers[randomIndex];
+            document.getElementById('hint').innerText = "Dica: " + currentBrawler.hint;
+            document.getElementById('message').innerText = "";
+            document.getElementById('guessInput').value = "";
+            document.getElementById('guessInput').focus();
+        }
+
+        function checkGuess() {
+            const userGuess = document.getElementById('guessInput').value.trim().toLowerCase();
+            const correctAnswer = currentBrawler.name.toLowerCase();
+
+            if (userGuess === correctAnswer) {
+                document.getElementById('message').innerHTML = "<span style='color: #58db1b;'>CORRETO! 🌟</span>";
+                score++;
+                document.getElementById('score').innerText = score;
+                setTimeout(nextRound, 1500);
+            } else {
+                document.getElementById('message').innerHTML = "<span style='color: #ff4444;'>Tente novamente!</span>";
+            }
+        }
+
+        // Permitir apertar "Enter" para enviar
+        document.getElementById('guessInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Iniciar o primeiro round
+        window.onload = nextRound;
+    </script>
 </body>
 </html>
