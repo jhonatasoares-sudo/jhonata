@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Página Incrível</title>
+    <style>
+        /* CSS para dar um tapa no visual */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            background: #6200ee;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        main {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .botao {
+            display: inline-block;
+            background: #03dac6;
+            color: #000;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .botao:hover {
+            background: #018786;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bem-vindo ao Meu Site</h1>
+        <p>Criado com HTML5 e CSS3</p>
+    </header>
+
+    <main>
+        <h2>Sobre este código</h2>
+        <p>Este é um exemplo básico mas robusto. Ele contém:</p>
+        <ul>
+            <li><strong>Meta tags:</strong> Para garantir que o site funcione bem no celular.</li>
+            <li><strong>CSS embutido:</strong> Para você ver como as cores e fontes funcionam.</li>
+            <li><strong>Estrutura Semântica:</strong> Uso de <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> e <code>&lt;footer&gt;</code>.</li>
+        </ul>
+
+        <p>Quer ver uma mágica?</p>
+        <a href="#" class="botao" onclick="alert('Olá! Você clicou no botão.')">Clique Aqui</a>
+    </main>
+
+</body>
+</html>
